@@ -1,0 +1,39 @@
+version: '3.9'
+services:
+  metabase:
+    image: metabase/metabase:v0.47.6
+    container_name: metabase
+    hostname: metabase
+    volumes:
+    - /dev/urandom:/dev/random:ro
+    ports:
+      - 3000:3000
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: matabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: matabase
+      MB_DB_PASS: matabase@admin
+      MB_DB_HOST: postgres
+    networks:
+      - metanet1
+    healthcheck:
+      test: curl --fail -I http://localhost:3000/api/health || exit 1
+      interval: 15s
+      timeout: 5s
+      retries: 5
+  postgres:
+    image: postgres:16.0
+    container_name: metabase_db
+    hostname: postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: matabase
+      POSTGRES_USER: matabase
+      POSTGRES_PASSWORD: matabase@admin
+    networks:
+      - metanet1
+networks:
+  metanet1:
+    driver: bridge

@@ -28,6 +28,7 @@ services:
     hostname: postgres
     volumes:
       - ./data:/var/lib/postgresql/data
+      #- ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     environment:
       POSTGRES_DB: matabase
       POSTGRES_USER: matabase
